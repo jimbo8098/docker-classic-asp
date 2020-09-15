@@ -20,9 +20,6 @@ RUN New-IISSite -Name "$Env:SiteName" -BindingInformation "*:80:$Env:SiteName" -
 RUN New-IISSiteBinding -name "$Env:SiteName" -BindingInformation "*:80:www.$Env:SiteName" -Protocol http
 RUN Stop-IISCommitDelay -Commit 1
 
-RUN Import-Module WebAdministration
-RUN Set-ItemProperty IIS:\AppPools\app-pool-name -name processModel -value @{userName="$env:SVCUSER";password="$env:SVCPASS";identitytype=3}
-
 EXPOSE 80
 EXPOSE 443
 
