@@ -2,6 +2,8 @@ FROM mcr.microsoft.com/windows/servercore/iis
 SHELL ["powershell", "-command"]
 
 ENV SiteName="test.com"
+ENV SVCUSER=testuser
+ENV SVCPASS=testpass
 
 RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
 
@@ -24,10 +26,17 @@ RUN Set-ItemProperty IIS:\AppPools\app-pool-name -name processModel -value @{use
 EXPOSE 80
 EXPOSE 443
 
+RUN $env:SecurePass=ConvertTo-SecureString $env:SVCPASS -asplaintext -force
+RUN New-LocalUser -Name "$env:SVCUSER" -Password "$env:SecurePass" -Description "$env:SiteName Site User"
+
 #Need to do this in one operation. Seperate RUN commands fail to build.
 RUN Import-Module WebAdministration; if ($?) {\
-    Set-ItemProperty 'IIS:\Sites\$Env:SiteName' -Name logFile.enabled -Value False; if ($?) {\
-    Set-ItemProperty 'IIS:\Sites\$Env:SiteName' -Name logFile.truncateSize 20971520 }}
+    Set-ItemProperty "IIS:\Sites\$env:SiteName" -Name logFile.enabled -Value False; if ($?) {\
+    Set-ItemProperty "IIS:\Sites\$env:SiteName" -Name logFile.truncateSize 20971520; if ($?) {\
+    New-WebAppPool –Name "$env:SiteName"; if ($?) {\
+    Set-ItemProperty "IIS:\AppPools\$env:SiteName" -name processModel -value @{userName="$env:SVCUSER";password="$env:SVCPASS";identitytype=3}; if ($?) {\
+    Stop-WebAppPool $env:SiteName; if ($?) {\
+    Start-WebAppPool; }}}}}}
 
 WORKDIR /inetpub/wwwroot
 COPY $Env:SiteName/ $Env:SiteName/
