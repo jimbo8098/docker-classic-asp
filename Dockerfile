@@ -26,8 +26,8 @@ RUN Set-ItemProperty IIS:\AppPools\app-pool-name -name processModel -value @{use
 EXPOSE 80
 EXPOSE 443
 
-RUN $env:SecurePass=ConvertTo-SecureString $env:SVCPASS -asplaintext -force
-RUN New-LocalUser -Name "$env:SVCUSER" -Password "$env:SecurePass" -Description "$env:SiteName Site User"
+RUN $env:SecurePass=ConvertTo-SecureString $env:SVCPASS -asplaintext -force; if ($?) {\
+    New-LocalUser -Name "$env:SVCUSER" -Password "$env:SecurePass" -Description "$env:SiteName Site User" }
 
 #Need to do this in one operation. Seperate RUN commands fail to build.
 RUN Import-Module WebAdministration; if ($?) {\
