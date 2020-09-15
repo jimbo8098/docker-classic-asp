@@ -10,12 +10,12 @@ RUN Install-WindowsFeature Web-ASP;
 RUN Install-WindowsFeature Web-ISAPI-Ext;
 RUN Install-WindowsFeature Web-ISAPI-Filter;
 
-RUN mkdir c:\inetpub\wwwroot\$SiteName
+RUN mkdir c:\inetpub\wwwroot\$Env:SiteName
 RUN Remove-Website -Name 'Default Web Site';
 
 RUN Start-IISCommitDelay
-RUN New-IISSite -Name "$SiteName" -BindingInformation "*:80:$SiteName" -Protocol http -PhysicalPath "C:\inetpub\wwwroot\$SiteName"
-RUN New-IISSiteBinding -name "$SiteName" -BindingInformation "*:80:www.$SiteName" -Protocol http
+RUN New-IISSite -Name "$Env:SiteName" -BindingInformation "*:80:$Env:SiteName" -Protocol http -PhysicalPath "C:\inetpub\wwwroot\$Env:SiteName"
+RUN New-IISSiteBinding -name "$Env:SiteName" -BindingInformation "*:80:www.$Env:SiteName" -Protocol http
 RUN Stop-IISCommitDelay -Commit 1
 
 RUN Import-Module WebAdministration
@@ -26,8 +26,8 @@ EXPOSE 443
 
 #Need to do this in one operation. Seperate RUN commands fail to build.
 RUN Import-Module WebAdministration; if ($?) {\
-    Set-ItemProperty 'IIS:\Sites\$SiteName' -Name logFile.enabled -Value False; if ($?) {\
-    Set-ItemProperty 'IIS:\Sites\$SiteName' -Name logFile.truncateSize 20971520 }}
+    Set-ItemProperty 'IIS:\Sites\$Env:SiteName' -Name logFile.enabled -Value False; if ($?) {\
+    Set-ItemProperty 'IIS:\Sites\$Env:SiteName' -Name logFile.truncateSize 20971520 }}
 
 WORKDIR /inetpub/wwwroot
-COPY $SiteName/ $SiteName/
+COPY $Env:SiteName/ $Env:SiteName/
