@@ -50,13 +50,13 @@ jobs:
         run: |
           set IMAGE_ID=ghcr.io/$Env:github.repository_owner/$Env:IMAGE_NAME
 
-          $Env:VERSION=(echo $Env:VERSION) -replace '^v',''
+          set VERSION=(echo $Env:VERSION) -replace '^v',''
 
           # Use Docker `latest` tag convention
           if($Env:VERSION -eq "master") { $Env:VERSION="latest"; }
 
-          echo IMAGE_ID=$Env:IMAGE_ID
-          echo VERSION=$Env:VERSION
+          echo IMAGE_ID=$IMAGE_ID
+          echo VERSION=$VERSION
 
-          docker tag $Env:IMAGE_NAME $Env:IMAGE_ID:$Env:VERSION
+          docker tag $Env:IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $Env:IMAGE_ID:$Env:VERSION
