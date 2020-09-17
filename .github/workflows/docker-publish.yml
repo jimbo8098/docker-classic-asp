@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests
         run: |
-            docker build . --file Dockerfile
+            docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -41,9 +41,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Build image
-        run: docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
 
       - name: Log into GitHub Container Registry
       # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
