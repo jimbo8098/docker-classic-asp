@@ -48,7 +48,7 @@ jobs:
         run: |
           set IMAGE_ID=ghcr.io/$Env:github.repository_owner/${Env:IMAGE_NAME}
 
-          set VERSION=${{ GITHUB_REF }}
+          set VERSION=${{ github.ref }}
 
           # Use Docker `latest` tag convention
           if(${Env:VERSION} -eq "master") { ${Env:VERSION}="latest"; }
