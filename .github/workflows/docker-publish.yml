@@ -28,7 +28,7 @@ jobs:
 
       - name: Run tests
         run: |
-            docker build . --file Dockerfile --tag ${{ IMAGE_NAME }} --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
+            docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
@@ -46,7 +46,7 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          set IMAGE_ID=ghcr.io/$Env:github.repository_owner/${{ IMAGE_NAME }}
+          set IMAGE_ID=ghcr.io/$Env:github.repository_owner/${Env:IMAGE_NAME}
 
           set VERSION=${{ GITHUB_REF }}
 
@@ -56,5 +56,5 @@ jobs:
           echo "IMAGE_ID=${IMAGE_ID}"
           echo "VERSION=${VERSION}"
 
-          docker tag ${{ IMAGE_NAME }} ${IMAGE_ID}:${VERSION}
+          docker tag ${Env:IMAGE_NAME} ${IMAGE_ID}:${VERSION}
           docker push ${IMAGE_ID}:${VERSION}
