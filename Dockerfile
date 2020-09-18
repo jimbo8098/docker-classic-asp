@@ -37,6 +37,3 @@ RUN Import-Module WebAdministration; if ($?) {\
 
 WORKDIR /inetpub/wwwroot
 COPY $SITENAME/ $SITENAME/
-
-# certimport sets this back to AllSigned
-RUN Set-ExecutionPolicy Bypass -Force
