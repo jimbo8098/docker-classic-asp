@@ -46,15 +46,15 @@ jobs:
 
       - name: Push image to GitHub Container Registry
         run: |
-          set IMAGE_ID=ghcr.io/$Env:github.repository_owner/$Env:IMAGE_NAME
+          set IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
 
-          set VERSION=$Env:GITHUB_REF
+          set VERSION=$GITHUB_REF
 
           # Use Docker `latest` tag convention
           if($Env:VERSION -eq "master") { $Env:VERSION="latest"; }
 
-          echo "IMAGE_ID=${Env:IMAGE_ID}"
-          echo "VERSION=${Env:VERSION}"
+          echo "IMAGE_ID=${IMAGE_ID}"
+          echo "VERSION=${VERSION}"
           echo "TAG: ${IMAGE_ID}:${VERSION}"
 
           docker tag $Env:IMAGE_NAME ${Env:IMAGE_ID}:${Env:VERSION}
