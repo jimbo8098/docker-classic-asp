@@ -40,6 +40,22 @@ jobs:
     if: github.event_name == 'push'
 
     steps:
+      - name: Push image to GitHub Container Registry
+        run: |
+          set IMAGE_ID="ghcr.io/${{ github.repository_owner }}/${Env:IMAGE_NAME}"
+          set VERSION=$GITHUB_REF
+
+          # Use Docker `latest` tag convention
+          if($Env:VERSION -eq "master") { $Env:VERSION="latest"; }
+
+          echo "Image Name=${Env:IMAGE_NAME}"
+          echo "IMAGE_ID=${Env:IMAGE_ID}"
+          echo "IMAGE_ID=$IMAGE_ID"
+          echo "Version= ${Env:Version}"
+          echo "Version= ${{ Env:Version }}"
+
+
+          echo "TAG: ${IMAGE_ID}:${VERSION}"
       - name: Log into GitHub Container Registry
       # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
@@ -54,7 +70,6 @@ jobs:
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
-          echo "IMAGE_ID=${{ Env:IMAGE_ID }}"
           echo "IMAGE_ID=$IMAGE_ID"
           echo "Version= ${Env:Version}"
           echo "Version= ${{ Env:Version }}"
