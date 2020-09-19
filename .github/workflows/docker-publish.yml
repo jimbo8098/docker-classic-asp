@@ -47,7 +47,6 @@ jobs:
       - name: Push image to GitHub Container Registry
         run: |
           set IMAGE_ID="ghcr.io/${{ github.repository_owner }}/${Env:IMAGE_NAME}"
-
           set VERSION=$GITHUB_REF
 
           # Use Docker `latest` tag convention
@@ -55,7 +54,11 @@ jobs:
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
+          echo "IMAGE_ID=${{ IMAGE_ID }}"
+          echo "IMAGE_ID=${{ Env:IMAGE_ID }}"
           echo "IMAGE_ID=$IMAGE_ID"
+          echo "Version= ${Env:Version}"
+          echo "Version= ${{ Env:Version }}"
 
 
           echo "TAG: ${IMAGE_ID}:${VERSION}"
