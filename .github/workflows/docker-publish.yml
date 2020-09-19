@@ -54,7 +54,6 @@ jobs:
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
-          echo "IMAGE_ID=${{ IMAGE_ID }}"
           echo "IMAGE_ID=${{ Env:IMAGE_ID }}"
           echo "IMAGE_ID=$IMAGE_ID"
           echo "Version= ${Env:Version}"
