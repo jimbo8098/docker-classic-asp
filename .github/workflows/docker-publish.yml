@@ -25,9 +25,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      - name: Push image to GitHub Container Registry
-        run: powershell .\build.ps1
       - name: Run tests
         run: |
             docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
@@ -35,7 +32,6 @@ jobs:
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
-    # Ensure test job passes before pushing image.
     needs: test
 
     runs-on: windows-2019
@@ -43,7 +39,9 @@ jobs:
 
     steps:
       - name: Log into GitHub Container Registry
-      # TODO: Create a PAT with `read:packages` and `write:packages` scopes and save it as an Actions secret `CR_PAT`
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Push image to GitHub Container Registry
+        run: powershell .\build.ps1
 
       
