@@ -1,4 +1,4 @@
-set IMAGE_ID="ghcr.io/${{ github.repository_owner }}/${Env:IMAGE_NAME}"
+set IMAGE_ID="ghcr.io/${Env:REPO_OWNER}/${Env:IMAGE_NAME}"
 set VERSION=$Env:GITHUB_REF
 
 # Use Docker `latest` tag convention
