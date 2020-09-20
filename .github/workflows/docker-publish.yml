@@ -24,13 +24,12 @@ jobs:
     runs-on: windows-2019
 
     steps:
+      - uses: actions/checkout@v2
+      
       - name: Check dir
         run: dir .\
       - name: Push image to GitHub Container Registry
         run: powershell .\build.ps1
-
-      - uses: actions/checkout@v2
-
       - name: Run tests
         run: |
             docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
