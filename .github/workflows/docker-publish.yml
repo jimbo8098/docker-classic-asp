@@ -24,6 +24,8 @@ jobs:
     runs-on: windows-2019
 
     steps:
+      - name: Check dir
+        run: dir .\
       - name: Push image to GitHub Container Registry
         run: powershell .\build.ps1
 
