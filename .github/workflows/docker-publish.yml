@@ -16,7 +16,8 @@ on:
 env:
   # TODO: Change variable to your image's name.
   IMAGE_NAME: classic-asp
-
+  IMAGE_ID: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}
+  VERSION: ${{ GITHUB_REF }}
 jobs:
   # Run tests.
   # See also https://docs.docker.com/docker-hub/builds/automated-testing/
@@ -26,11 +27,8 @@ jobs:
     steps:
       - name: Push image to GitHub Container Registry
         run: |
-          set IMAGE_ID="ghcr.io/${{ github.repository_owner }}/${Env:IMAGE_NAME}"
-          set VERSION=$GITHUB_REF
-
           # Use Docker `latest` tag convention
-          if($Env:VERSION -eq "master") { $Env:VERSION="latest"; }
+          if($env:VERSION -eq "master") { $env:VERSION="latest"; }
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
