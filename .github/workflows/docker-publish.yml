@@ -34,10 +34,16 @@ jobs:
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
+          echo "IMAGE_ID=$env:IMAGE_ID"
           echo "IMAGE_ID=$IMAGE_ID"
           echo "Version= ${Env:Version}"
+
+
           echo "TAG: ${IMAGE_ID}:${VERSION}"
-          
+
+          docker tag "${Env:IMAGE_NAME}" "${Env:IMAGE_ID}:${Env:VERSION}"
+          docker push "${IMAGE_ID}":"${Env:VERSION}"
+
       - uses: actions/checkout@v2
 
       - name: Run tests
@@ -68,6 +74,7 @@ jobs:
 
           echo "Image Name=${Env:IMAGE_NAME}"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
+          echo "IMAGE_ID=$env:IMAGE_ID"
           echo "IMAGE_ID=$IMAGE_ID"
           echo "Version= ${Env:Version}"
 
