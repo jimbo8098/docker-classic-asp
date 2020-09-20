@@ -1,5 +1,5 @@
 $IMAGE_ID="ghcr.io/${Env:REPO_OWNER}/${Env:IMAGE_NAME}"
-$VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "/refs/heads/",""
+$VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
 
 # Use Docker `latest` tag convention
 if($Env:VERSION -eq "master") { $Env:VERSION="latest"; }
