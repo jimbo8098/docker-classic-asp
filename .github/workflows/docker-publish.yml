@@ -30,7 +30,7 @@ jobs:
           # Use Docker `latest` tag convention
           if($env:VERSION -eq "master") { $env:VERSION="latest"; }
 
-          echo "Image Name=${Env:IMAGE_NAME}"
+          echo "Image Name=$Env:IMAGE_NAME"
           echo "IMAGE_ID=${Env:IMAGE_ID}"
           echo "IMAGE_ID=$env:IMAGE_ID"
           echo "IMAGE_ID=$IMAGE_ID"
