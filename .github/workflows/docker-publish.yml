@@ -25,9 +25,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Check dir
-        run: dir .\
+
       - name: Push image to GitHub Container Registry
         run: powershell .\build.ps1
       - name: Run tests
