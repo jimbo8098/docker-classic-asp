@@ -18,27 +18,20 @@ env:
   IMAGE_NAME: classic-asp
   REPO_OWNER: ${{ github.repository_owner }}
 jobs:
-  # Run tests.
-  # See also https://docs.docker.com/docker-hub/builds/automated-testing/
-  test:
-    runs-on: windows-2019
-
-    steps:
-      - uses: actions/checkout@v2
-      - name: Run tests
-        run: |
-            docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
 
   # Push image to GitHub Packages.
   # See also https://docs.docker.com/docker-hub/builds/
   push:
-    needs: test
-
     runs-on: windows-2019
     if: github.event_name == 'push'
 
     steps:
       - uses: actions/checkout@v2
+
+      - name: Run tests
+        run: |
+          docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
+      
       - name: Log into GitHub Container Registry
         run: echo "${{ secrets.CR_PAT }}" | docker login https://ghcr.io -u ${{ github.actor }} --password-stdin
 
