@@ -18,6 +18,8 @@ env:
   IMAGE_NAME: docker-classic-asp
   REPO_OWNER: ${{ github.repository_owner }}
   CR_HOST: ""
+  CR_PAT: ${{ secrets.CR_PAT }}
+  CR_USER: ${{ secrets.CR_USER }}
 jobs:
 
   # Push image to GitHub Packages.
@@ -32,9 +34,6 @@ jobs:
       - name: Run tests
         run: |
           docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
-      
-      - name: Log into GitHub Container Registry
-        run: echo "${{ secrets.CR_PAT }}" | docker login $Env:CR_HOST -u ${{ secrets.CR_USER }} --password-stdin
 
       - name: Push image to GitHub Container Registry
         run: powershell .\build.ps1
