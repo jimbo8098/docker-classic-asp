@@ -38,4 +38,10 @@ jobs:
       - name: Push image to GitHub Container Registry
         run: powershell .\build.ps1
 
+      - name: Push image to Github Packages
+        run: |
+          cat ~/GH_TOKEN.txt | docker login docker.pkg.github.com -u jimbo8098 --password-stdin
+          docker tag IMAGE_ID docker.pkg.github.com/jimbo8098/docker-classic-asp/IMAGE_NAME:VERSION
+          docker push docker.pkg.github.com/jimbo8098/docker-classic-asp/IMAGE_NAME:VERSION
+
       
