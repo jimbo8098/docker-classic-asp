@@ -9,7 +9,6 @@ ARG SVCPASS="P@ssW0rd"
 
 
 RUN Install-WindowsFeature Web-ASP;
-RUN Install-WindowsFeature Web-ISAPI-Ext;
 RUN Install-WindowsFeature Web-ISAPI-Filter;
 
 RUN mkdir c:\inetpub\wwwroot\${env:SITENAME}
