@@ -35,7 +35,10 @@ jobs:
         run: docker login -u ${{ secrets.CR_USER }} -p ${{ secrets.CR_PAT }}
 
       - name: Push test
-        run: echo "docker tag ${Env:IMAGE_NAME} ${IMAGE_ID}:${VERSION}"
+        run: |
+          $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
+          $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
+          echo "docker tag ${Env:IMAGE_NAME} ${IMAGE_ID}:${VERSION}"
       
       - name: Run tests
         run: |
