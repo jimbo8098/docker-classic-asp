@@ -54,4 +54,4 @@ jobs:
           echo "docker push ${Env:IMAGE_ID}:${VERSION}"
 
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${VERSION}"
-          docker push "${IMAGE_ID}:${VERSION}""
+          docker push "${IMAGE_ID}:${VERSION}"
