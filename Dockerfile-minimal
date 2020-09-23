@@ -7,7 +7,6 @@ RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
 RUN Install-WindowsFeature Web-ASP;
 RUN Install-WindowsFeature Web-ISAPI-Filter;
 
-RUN mkdir c:\inetpub\wwwroot\${env:SITENAME}
 RUN Remove-Website -Name 'Default Web Site';
 
 WORKDIR /inetpub/wwwroot
