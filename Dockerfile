@@ -6,6 +6,7 @@ RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
 ARG SITENAME="test.com"
 ARG SVCUSER="testuser"
 ARG SVCPASS="P@ssW0rd"
+ARG SITEHOST="test.com"
 
 
 RUN Install-WindowsFeature Web-ASP;
@@ -15,8 +16,8 @@ RUN mkdir c:\inetpub\wwwroot\${env:SITENAME}
 RUN Remove-Website -Name 'Default Web Site';
 
 RUN Start-IISCommitDelay
-RUN New-IISSite -Name "${env:SITENAME}" -BindingInformation "*:80:${env:SITENAME}" -Protocol http -PhysicalPath "C:\inetpub\wwwroot\${env:SITENAME}"
-RUN New-IISSiteBinding -name "${env:SITENAME}" -BindingInformation "*:80:www.${env:SITENAME}" -Protocol http
+RUN New-IISSite -Name "${env:SITENAME}" -BindingInformation "*:80:${env:SITEHOST}" -Protocol http -PhysicalPath "C:\inetpub\wwwroot\${env:SITENAME}"
+RUN New-IISSiteBinding -name "${env:SITENAME}" -BindingInformation "*:80:www.${env:SITEHOST}" -Protocol http
 RUN Stop-IISCommitDelay -Commit 1
 
 EXPOSE 80
