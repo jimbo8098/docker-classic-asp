@@ -20,6 +20,7 @@ env:
   CR_HOST: ""
   CR_PAT: ${{ secrets.CR_PAT }}
   CR_USER: ${{ secrets.CR_USER }}
+
 jobs:
 
   # Push image to GitHub Packages.
@@ -27,19 +28,11 @@ jobs:
   push:
     runs-on: windows-2019
     if: github.event_name == 'push'
-
     steps:
       - uses: actions/checkout@v2
 
       - name: Log into Dockerhub
         run: docker login -u ${{ secrets.CR_USER }} -p ${{ secrets.CR_PAT }}
-
-      - name: Push test
-        run: |
-          $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
-          $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
-          echo "docker tag ${Env:IMAGE_NAME} ${IMAGE_ID}:${VERSION}"
-          echo "docker push ${IMAGE_ID}:${VERSION}"
       
       - name: Run tests
         run: |
@@ -50,8 +43,17 @@ jobs:
           $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
           $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
 
-          echo "docker tag ${Env:IMAGE_NAME} ${IMAGE_ID}:${VERSION}"
-          echo "docker push ${Env:IMAGE_ID}:${VERSION}"
-
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${VERSION}"
+          docker push "${IMAGE_ID}:${VERSION}"
+
+      - name: Run tests
+        run: |
+          docker build . --file Dockerfile-minimal --tag ${Env:IMAGE_NAME}-minimal
+
+      - name: Push
+        run: |
+          $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}-minimal"
+          $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
+
+          docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${VERSION}"
           docker push "${IMAGE_ID}:${VERSION}"
