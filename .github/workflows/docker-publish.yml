@@ -34,11 +34,11 @@ jobs:
       - name: Log into Dockerhub
         run: docker login -u ${{ secrets.CR_USER }} -p ${{ secrets.CR_PAT }}
       
-      - name: Run tests
+      - name: Run tests on main
         run: |
           docker build . --file Dockerfile --tag $Env:IMAGE_NAME --build-arg SVCUSER="testuser" --build-arg SVCPASS="TeStP@ssW0rd" --build-arg SITENAME="test.com"
 
-      - name: Push
+      - name: Push main
         run: |
           $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
           $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
@@ -46,11 +46,11 @@ jobs:
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${VERSION}"
           docker push "${IMAGE_ID}:${VERSION}"
 
-      - name: Run tests
+      - name: Run tests on minimal
         run: |
           docker build . --file Dockerfile-minimal --tag ${Env:IMAGE_NAME}-minimal
 
-      - name: Push
+      - name: Push minimal
         run: |
           $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}-minimal"
           $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
