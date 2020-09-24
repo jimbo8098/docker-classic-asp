@@ -52,7 +52,7 @@ jobs:
 
       - name: Push minimal
         run: |
-          $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}-minimal"
+          $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
           $VERSION=(("${Env:GITHUB_REF}-minimal") -replace "master","latest") -replace "refs/heads/",""
 
           docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${VERSION}"
