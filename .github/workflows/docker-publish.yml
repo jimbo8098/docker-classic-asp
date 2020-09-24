@@ -47,7 +47,7 @@ jobs:
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${VERSION}"
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${SHORT_SHA}"
           docker push "${IMAGE_ID}:${VERSION}"
-          docker push "${IMAGE_ID}:${Env:GITHUB_SHA}"
+          docker push "${IMAGE_ID}:${SHORT_SHA}"
 
       - name: Run tests on minimal
         run: |
@@ -62,4 +62,4 @@ jobs:
           docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${VERSION}"
           docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${SHORT_SHA}-minimal"
           docker push "${IMAGE_ID}:${VERSION}"
-          docker push "${IMAGE_ID}:${IMAGE_ID}:${Env:GITHUB_SHA}-minimal"
+          docker push "${IMAGE_ID}:${IMAGE_ID}:${SHORT_SHA}-minimal"
