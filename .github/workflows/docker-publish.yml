@@ -40,11 +40,12 @@ jobs:
 
       - name: Push main
         run: |
+          $SHORT_SHA=(${Env:GITHUB_SHA}).Substring(0,20)
           $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
           $VERSION=(($Env:GITHUB_REF) -replace "master","latest") -replace "refs/heads/",""
 
           docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${VERSION}"
-          docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${Env:GITHUB_SHA}"
+          docker tag "${Env:IMAGE_NAME}" "${IMAGE_ID}:${SHORT_SHA}"
           docker push "${IMAGE_ID}:${VERSION}"
           docker push "${IMAGE_ID}:${Env:GITHUB_SHA}"
 
@@ -54,10 +55,11 @@ jobs:
 
       - name: Push minimal
         run: |
+          $SHORT_SHA=(${Env:GITHUB_SHA}).Substring(0,20)
           $IMAGE_ID="${Env:CR_USER}/${Env:IMAGE_NAME}"
           $VERSION=(("${Env:GITHUB_REF}-minimal") -replace "master","latest") -replace "refs/heads/",""
 
           docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${VERSION}"
-          docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${Env:GITHUB_SHA}-minimal"
+          docker tag "${Env:IMAGE_NAME}-minimal" "${IMAGE_ID}:${SHORT_SHA}-minimal"
           docker push "${IMAGE_ID}:${VERSION}"
           docker push "${IMAGE_ID}:${IMAGE_ID}:${Env:GITHUB_SHA}-minimal"
